@@ -13,12 +13,51 @@
 
 * allows dumping SecureROM, decrypting keybags for iOS firmware, and demoting device for JTAG
 
-* current SoC support: s5l8947x, s5l8950x, s5l8955x, s5l8960x, t8002, t8004, t8010, t8011, t8015
+## Support
 
-* future SoC support: s5l8940x, s5l8942x, s5l8945x, s5l8747x, t7000, t7001, s7002, s8000, s8001, s8003, t8012
+### iPhone
 
-* full jailbreak with Cydia on latest iOS version is possible, but requires additional work
+| SoC name                         | SoC identifier     | supported |
+|----------------------------------|--------------------|-----------|
+| A5                               | S5L8940X, S5L8942X | No        |
+| A5 (Apple TV only)               | S5l8947X           | Yes       |
+| A5X                              | S5L8945X           | No        |
+| A6                               | S5L8950X           | Yes       |
+| A6X                              | S5L8955X           | Yes       |
+| A7                               | S5L8960X           | Yes       |
+| A8                               | T7000              | No        |
+| A8X                              | T7001              | No        |
+| A9                               | S8000              | No        |
+| A9X                              | S8001, S8003       | No        |
+| A10                              | T8010              | Yes       |
+| A10X                             | T8011              | Yes       |
+| A11                              | T8015              | Yes       |
 
+### iPad
+
+| SoC name                         | SoC identifier     | supported |
+|----------------------------------|--------------------|-----------|
+
+### Mac
+
+| SoC name                         | SoC identifier     | supported |
+|----------------------------------|--------------------|-----------|
+| T2                               | T8012              | No        |
+| iBridge (first generation)       T8012              | No        |
+
+### Apple Watch
+
+| SoC name                         | SoC identifier     | supported |
+|----------------------------------|--------------------|-----------|
+| S1                               | S7002              | No        |
+| S1P, S2                          | T8002              | Yes       |
+| S3                               | T8004              | Yes       |
+
+### Other
+
+| SoC name                         | SoC identifier     | supported |
+|----------------------------------|--------------------|-----------|
+| Haywire                          | S5L8747X           | No        |
 
 ## Quick start guide for checkm8
 
