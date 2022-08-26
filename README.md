@@ -28,22 +28,29 @@
 | A8                               | T7000              | No        |
 | A8X                              | T7001              | No        |
 | A9                               | S8000              | No        |
-| A9X                              | S8001, S8003       | No        |
 | A10                              | T8010              | Yes       |
-| A10X                             | T8011              | Yes       |
 | A11                              | T8015              | Yes       |
 
 ### iPad
 
 | SoC name                         | SoC identifier     | supported |
 |----------------------------------|--------------------|-----------|
+| A9X                              | S8001, S8003       | No        |
+| A10                              | T8010              | Yes       |
+| A10X                             | T8011              | Yes       |
 
 ### Mac
 
 | SoC name                         | SoC identifier     | supported |
 |----------------------------------|--------------------|-----------|
 | T2                               | T8012              | No        |
-| iBridge (first generation)       T8012              | No        |
+| iBridge (first generation)       | T8002              | No        |
+
+### Apple TV
+
+| SoC name                         | SoC identifier     | supported |
+|----------------------------------|--------------------|-----------|
+| A10X                             | T8011              | Yes       |
 
 ### Apple Watch
 
