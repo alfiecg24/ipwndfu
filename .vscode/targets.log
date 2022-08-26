@@ -1,0 +1,295 @@
+make all --print-data-base --no-builtin-variables --no-builtin-rules --question
+# GNU Make 3.81
+# Copyright (C) 2006  Free Software Foundation, Inc.
+# This is free software; see the source for copying conditions.
+# There is NO warranty; not even for MERCHANTABILITY or FITNESS FOR A
+# PARTICULAR PURPOSE.
+
+# This program built for i386-apple-darwin11.3.0
+ 
+
+# Make data base, printed on Fri Aug 26 15:16:56 2022
+
+# Variables
+
+ 
+# automatic
+<D = $(patsubst %/,%,$(dir $<))
+# automatic
+?F = $(notdir $?)
+# automatic
+?D = $(patsubst %/,%,$(dir $?))
+# automatic
+@D = $(patsubst %/,%,$(dir $@))
+# automatic
+@F = $(notdir $@)
+# makefile
+CURDIR := /Volumes/Development/iOS Exploits/ipwndfu
+# makefile
+SHELL = /bin/sh
+# environment
+VSCODE_NLS_CONFIG = {"locale":"en-gb","availableLanguages":{},"_languagePackSupport":true}
+# environment
+_ = /usr/bin/make
+# makefile (from `Makefile', line 1)
+MAKEFILE_LIST :=  Makefile
+# environment
+__CFBundleIdentifier = com.microsoft.VSCode
+# environment
+INFOPATH = /opt/homebrew/share/info:
+# environment
+VSCODE_CWD = /
+# environment
+PATH = /Users/alfie/bin:/usr/local/bin:/usr/local/opt/libxml2/bin:/usr/local/opt/libxml2/bin:/usr/local/opt/libxml2/bin:/opt/homebrew/opt/llvm/bin:/Library/Frameworks/Python.framework/Versions/2.7/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Library/Frameworks/Python.framework/Versions/3.10/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/share/dotnet:~/.dotnet/tools:/Library/Apple/usr/bin:/Library/Frameworks/Mono.framework/Versions/Current/Commands
+# environment
+LSCOLORS = Gxfxcxdxbxegedabagacad
+# environment
+ELECTRON_RUN_AS_NODE = 1
+# default
+.FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
+# environment
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.sI5furA7Wr/Listeners
+# automatic
+%F = $(notdir $%)
+# environment
+PWD = /Volumes/Development/iOS Exploits/ipwndfu
+# environment
+HOMEBREW_CELLAR = /opt/homebrew/Cellar
+# environment
+ORIGINAL_XDG_CURRENT_DESKTOP = undefined
+# environment
+MANPATH = /opt/homebrew/share/man::
+# environment
+VSCODE_AMD_ENTRYPOINT = vs/workbench/api/node/extensionHostProcess
+# environment
+HOME = /Users/alfie
+# default
+MAKEFILEPATH := /Applications/Xcode-beta.app/Contents/Developer/Makefiles
+# environment
+VSCODE_CODE_CACHE_PATH = /Users/alfie/Library/Application Support/Code/CachedData/e4503b30fc78200f846c62cf8091b76ff5547662
+# environment
+LOGNAME = alfie
+# environment
+APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
+# environment
+ZSH = /Users/alfie/.oh-my-zsh
+# environment
+VSCODE_HANDLES_UNCAUGHT_ERRORS = true
+# automatic
+^D = $(patsubst %/,%,$(dir $^))
+# environment
+XPC_FLAGS = 0x0
+# default
+MAKE = $(MAKE_COMMAND)
+# default
+MAKECMDGOALS := all
+# environment
+SHLVL = 1
+# default
+MAKE_VERSION := 3.81
+# environment
+USER = alfie
+# makefile
+.DEFAULT_GOAL := all
+# environment
+LESS = -R
+# automatic
+%D = $(patsubst %/,%,$(dir $%))
+# default
+MAKE_COMMAND := /Applications/Xcode-beta.app/Contents/Developer/usr/bin/make
+# default
+.VARIABLES := 
+# environment
+TMPDIR = /var/folders/df/fqx0n27j5sqbm7k0cs9fm4s80000gn/T/
+# automatic
+*F = $(notdir $*)
+# environment
+VSCODE_IPC_HOOK = /Users/alfie/Library/Application Support/Code/1.70.2-main.sock
+# environment
+MallocNanoZone = 0
+# makefile
+MAKEFLAGS = Rrqp
+# environment
+MFLAGS = -Rrqp
+# automatic
+*D = $(patsubst %/,%,$(dir $*))
+# environment
+XPC_SERVICE_NAME = application.com.microsoft.VSCode.16941495.16941501
+# environment
+ 
+HOMEBREW_PREFIX = /opt/homebrew
+# automatic
++D = $(patsubst %/,%,$(dir $+))
+# automatic
++F = $(notdir $+)
+# environment
+HOMEBREW_REPOSITORY = /opt/homebrew
+# environment
+__CF_USER_TEXT_ENCODING = 0x1F5:0:2
+# environment
+COMMAND_MODE = unix2003
+# default
+MAKEFILES := 
+# automatic
+<F = $(notdir $<)
+# environment
+PAGER = less
+# environment
+LC_ALL = C
+# automatic
+^F = $(notdir $^)
+# default
+SUFFIXES := 
+# default
+.INCLUDE_DIRS = /usr/local/include
+# environment
+MAKELEVEL := 0
+# environment
+THEOS = /Users/alfie/theos
+# environment
+LANG = C
+# environment
+VSCODE_PID = 4225
+# variable set hash-table stats:
+# Load=68/1024=7%, Rehash=0, Collisions=1/94=1%
+
+# Pattern-specific Variable Values
+
+# No pattern-specific variable values.
+
+# Directories
+
+# . (device 16777233, inode 233586): 33 files, no impossibilities.
+
+# 33 files, no impossibilities in 1 directories.
+
+# Implicit Rules
+
+# No implicit rules.
+
+# Files
+
+arm64:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 38):
+	xcrun -sdk iphoneos clang src/usb_0xA1_2_arm64.S -target arm64-apple-darwin -Wall -o bin/usb_0xA1_2_arm64.o
+	gobjcopy -O binary -j .text bin/usb_0xA1_2_arm64.o bin/usb_0xA1_2_arm64.bin
+	rm bin/usb_0xA1_2_arm64.o
+	xcrun -sdk iphoneos clang src/checkm8_arm64.S -target arm64-apple-darwin -Wall -o bin/checkm8_arm64.o
+	gobjcopy -O binary -j .text bin/checkm8_arm64.o bin/checkm8_arm64.bin
+	rm bin/checkm8_arm64.o
+	xcrun -sdk iphoneos clang src/t8010_t8011_disable_wxn_arm64.S -target arm64-apple-darwin -Wall -o bin/t8010_t8011_disable_wxn_arm64.o
+	gobjcopy -O binary -j .text bin/t8010_t8011_disable_wxn_arm64.o bin/t8010_t8011_disable_wxn_arm64.bin
+	rm bin/t8010_t8011_disable_wxn_arm64.o
+	xcrun -sdk iphoneos clang src/t8015_shellcode_arm64.S -target arm64-apple-darwin -Wall -o bin/t8015_shellcode_arm64.o
+	gobjcopy -O binary -j .text bin/t8015_shellcode_arm64.o bin/t8015_shellcode_arm64.bin
+	rm bin/t8015_shellcode_arm64.o
+	
+
+all: armv6 armv7 arm64
+#  Command-line target.
+#  Implicit rule search has been done.
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/2=0%
+
+# Not a target:
+.SUFFIXES:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+# Not a target:
+Makefile:
+#  Implicit rule search has been done.
+ 
+#  Last modified 2022-08-26 15:16:34
+#  File has been updated.
+#  Successfully updated.
+# variable set hash-table stats:
+# Load=0/32=0%, Rehash=0, Collisions=0/0=0%
+
+# Not a target:
+.DEFAULT:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+
+armv6:
+#  Implicit rule search has not been done.
+#  Implicit/static pattern stem: `'
+#  File does not exist.
+#  File has been updated.
+#  Needs to be updated (-q is set).
+# automatic
+# @ := armv6
+# automatic
+# % := 
+# automatic
+# * := 
+# automatic
+# + := 
+# automatic
+# | := 
+# automatic
+# < := 
+# automatic
+# ^ := 
+# automatic
+# ? := 
+# variable set hash-table stats:
+# Load=8/32=25%, Rehash=0, Collisions=1/10=10%
+#  commands to execute (from `Makefile', line 4):
+	arm-none-eabi-as -march=armv6 -mthumb --fatal-warnings -o bin/steaks4uce-shellcode.o src/steaks4uce-shellcode.S
+	arm-none-eabi-objcopy -O binary bin/steaks4uce-shellcode.o bin/steaks4uce-shellcode.bin
+	rm bin/steaks4uce-shellcode.o
+	
+
+armv7:
+#  Implicit rule search has not been done.
+#  Modification time never checked.
+#  File has not been updated.
+#  commands to execute (from `Makefile', line 9):
+	arm-none-eabi-as -mthumb --fatal-warnings -o bin/limera1n-shellcode.o src/limera1n-shellcode.S
+	arm-none-eabi-objcopy -O binary bin/limera1n-shellcode.o bin/limera1n-shellcode.bin
+	rm bin/limera1n-shellcode.o
+	arm-none-eabi-as -mthumb --fatal-warnings -o bin/SHAtter-shellcode.o src/SHAtter-shellcode.S
+	arm-none-eabi-objcopy -O binary bin/SHAtter-shellcode.o bin/SHAtter-shellcode.bin
+	rm bin/SHAtter-shellcode.o
+	arm-none-eabi-as -mthumb --fatal-warnings -o bin/24Kpwn-shellcode.o src/24Kpwn-shellcode.S
+	arm-none-eabi-objcopy -O binary bin/24Kpwn-shellcode.o bin/24Kpwn-shellcode.bin
+	rm bin/24Kpwn-shellcode.o
+	arm-none-eabi-as -mthumb --fatal-warnings -o bin/alloc8-shellcode.o src/alloc8-shellcode.S
+	arm-none-eabi-objcopy -O binary bin/alloc8-shellcode.o bin/alloc8-shellcode.bin
+	rm bin/alloc8-shellcode.o
+	arm-none-eabi-as -mthumb --fatal-warnings -o bin/ibss-flash-nor-shellcode.o src/ibss-flash-nor-shellcode.S
+	arm-none-eabi-objcopy -O binary bin/ibss-flash-nor-shellcode.o bin/ibss-flash-nor-shellcode.bin
+	rm bin/ibss-flash-nor-shellcode.o
+	arm-none-eabi-as -mthumb --fatal-warnings -o bin/usb_0xA1_2_armv7.o src/usb_0xA1_2_armv7.S
+	arm-none-eabi-objcopy -O binary bin/usb_0xA1_2_armv7.o bin/usb_0xA1_2_armv7.bin
+	rm bin/usb_0xA1_2_armv7.o
+	arm-none-eabi-as -mthumb --fatal-warnings -o bin/checkm8_armv7.o src/checkm8_armv7.S
+	arm-none-eabi-objcopy -O binary bin/checkm8_armv7.o bin/checkm8_armv7.bin
+	rm bin/checkm8_armv7.o
+	
+
+# files hash-table stats:
+# Load=7/1024=1%, Rehash=0, Collisions=0/24=0%
+# VPATH Search Paths
+
+# No `vpath' search paths.
+
+# No general (`VPATH' variable) search path.
+
+# # of strings in strcache: 1
+# # of strcache buffers: 1
+# strcache size: total = 4096 / max = 4096 / min = 4096 / avg = 4096
+# strcache free: total = 4087 / max = 4087 / min = 4087 / avg = 4087
+
+# Finished Make data base on Fri Aug 26 15:16:56 2022
+
+ 

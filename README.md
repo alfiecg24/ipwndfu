@@ -1,9 +1,18 @@
 ![](repo/ipwndfu.png)
-# Open-source jailbreaking tool for many iOS devices
+# Open-source jailbreaking tool for millions of iOS devices
 
 
 **Read [disclaimer](#disclaimer) before using this software.*
 
+## About this fork
+#### The following are goals for this fork
+
+* gain Python3 support, as the [original ipwndfu](https://github.com/axi0mx/ipwndfu) is out of date
+* fix libusb errors that may arise when running on modern macOS version
+* add the ability to run ipwndfu on M1 macs
+* add support for more devices
+
+#### Any contributions are greatly appreciated!
 
 ## checkm8
 
@@ -13,59 +22,7 @@
 
 * allows dumping SecureROM, decrypting keybags for iOS firmware, and demoting device for JTAG
 
-## Support
-
-### iPhone
-
-| SoC name                         | SoC identifier     | supported |
-|----------------------------------|--------------------|-----------|
-| A5                               | S5L8940X, S5L8942X | No        |
-| A5 (Apple TV only)               | S5l8947X           | Yes       |
-| A5X                              | S5L8945X           | No        |
-| A6                               | S5L8950X           | Yes       |
-| A6X                              | S5L8955X           | Yes       |
-| A7                               | S5L8960X           | Yes       |
-| A8                               | T7000              | No        |
-| A8X                              | T7001              | No        |
-| A9                               | S8000              | No        |
-| A10                              | T8010              | Yes       |
-| A11                              | T8015              | Yes       |
-
-### iPad
-
-| SoC name                         | SoC identifier     | supported |
-|----------------------------------|--------------------|-----------|
-| A9X                              | S8001, S8003       | No        |
-| A10                              | T8010              | Yes       |
-| A10X                             | T8011              | Yes       |
-
-### Mac
-
-| SoC name                         | SoC identifier     | supported |
-|----------------------------------|--------------------|-----------|
-| T2                               | T8012              | No        |
-| iBridge (first generation)       | T8002              | No        |
-
-### Apple TV
-
-| SoC name                         | SoC identifier     | supported |
-|----------------------------------|--------------------|-----------|
-| A10X                             | T8011              | Yes       |
-
-### Apple Watch
-
-| SoC name                         | SoC identifier     | supported |
-|----------------------------------|--------------------|-----------|
-| S1                               | S7002              | No        |
-| S1P, S2                          | T8002              | Yes       |
-| S3                               | T8004              | Yes       |
-
-### Other
-
-| SoC name                         | SoC identifier     | supported |
-|----------------------------------|--------------------|-----------|
-| Haywire                          | S5L8747X           | No        |
-
+* check compatibility using the [compatibility page](https://github.com/alfiecg24/ipwndfu/blob/master/Compatibility.md)
 ## Quick start guide for checkm8
 
 1. Use a cable to connect device to your Mac. Hold buttons as needed to enter DFU Mode.
@@ -78,29 +35,41 @@
 
 5. Run ```./ipwndfu --demote``` to demote device and enable JTAG.
 
+## alloc8 and 24Kpwn
+
+* allows for untethered (blobless) downgrades and jailbreaks on all iPhone 3GS devices
+* lets you dump NOR or flash your own custom NOR/NOR backup
+
+## Quick start guide for alloc8
+
+1. Use a cable to connect device to your Mac. Hold buttons as needed to enter DFU Mode.
+
+2. First, run ```./ipwndfu -p``` to exploit the device. Repeat the process if it fails, the exploit may not work on the first try.
+
+3. Next, run ```./ipwndfu -x``` to install alloc8 exploit to NOR. As long as the screen is not red, the exploit should have been successful.
+   
+4. If you have an old BootROM device, ipwndfu will tell you to let you use 24Kpwn instead - which is faster than alloc8.
+
+5. Check out the [jailbreak guide](https://github.com/axi0mX/ipwndfu/blob/master/JAILBREAK-GUIDE.md) for a more detailed tutorial.
 
 ## Features
 
-* Jailbreak and downgrade iPhone 3GS (new bootrom) with alloc8 untethered bootrom exploit. :-)
+* Place modern devices into pwned DFU mode using the checkm8 exploit
 
-* Pwned DFU Mode with steaks4uce exploit for S5L8720 devices.
+* Jailbreak and downgrade iPhone 3GS with either of the alloc8 or 24Kpwn untethered bootrom exploits.
 
-* Pwned DFU Mode with limera1n exploit for S5L8920/S5L8922 devices.
+* Utilise the follwing exploits: limera1n, SHAtter, steaks4uce, alloc8 24Kpwn and checkm8.
 
-* Pwned DFU Mode with SHAtter exploit for S5L8930 devices.
+* Dump SecureROM from pwned devices.
 
-* Dump SecureROM on S5L8920/S5L8922/S5L8930 devices.
-
-* Dump NOR on S5L8920 devices.
-
-* Flash NOR on S5L8920 devices.
+* Dump/flash NOR on the iPhone 3GS.
 
 * Encrypt or decrypt hex data on a connected device in pwned DFU Mode using its GID or UID key.
 
 
 ## Dependencies
 
-This tool should be compatible with Mac and Linux. It won't work in a virtual machine.
+This tool should be compatible with Mac and Linux. It won't work in a virtual machine - the USB passthrough is not quick enough for the exploits.
 
 * libusb, `If you are using Linux: install libusb using your package manager.`
 * [iPhone 3GS iOS 4.3.5 iBSS](#ibss)
@@ -108,7 +77,7 @@ This tool should be compatible with Mac and Linux. It won't work in a virtual ma
 
 ## Tutorial
 
-This tool can be used to downgrade or jailbreak iPhone 3GS (new bootrom) without SHSH blobs, as documented in [JAILBREAK-GUIDE](https://github.com/axi0mX/ipwndfu/blob/master/JAILBREAK-GUIDE.md).
+This tool can be used to downgrade or jailbreak iPhone 3GS (new bootrom) without SHSH blobs, as documented in the [jailbreak guide](https://github.com/axi0mX/ipwndfu/blob/master/JAILBREAK-GUIDE.md).
 
 
 ## Exploit write-up
@@ -127,7 +96,7 @@ http://appldnld.apple.com/iPhone4/041-1965.20110721.gxUB5/iPhone2,1_4.3.5_8L1_Re
 In Terminal, extract iBSS using the following command, then move the file to ipwndfu folder:
 
 ```
-unzip -p iPhone2,1_4.3.5_8L1_Restore.ipsw Firmware/dfu/iBSS.n88ap.RELEASE.dfu > n88ap-iBSS-4.3.5.img3
+unzip -p <path-to-IPSW> Firmware/dfu/iBSS.n88ap.RELEASE.dfu > <path-to-ipwndfu>/n88ap-iBSS-4.3.5.img3
 ```
 
 
