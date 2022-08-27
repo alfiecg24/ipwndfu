@@ -1018,8 +1018,11 @@ class Device(_objfinalizer.AutoFinalizedObject):
         number of bytes read.
         """
         try:
+            print('type: ' + type(data_or_wLength).__name__)
             buff = util.create_buffer(data_or_wLength)
         except TypeError:
+            print('TypeError')
+            print('type: ' + type(data_or_wLength).__name__)
             buff = _interop.as_array(data_or_wLength)
 
         self._ctx.managed_open()

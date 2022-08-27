@@ -26,7 +26,7 @@ def libusb1_create_ctrl_transfer(device, request, timeout):
 
 def libusb1_async_ctrl_transfer(device, bmRequestType, bRequest, wValue, wIndex, data, timeout):
   if usb.backend.libusb1._lib is not device._ctx.backend.lib:
-    print 'ERROR: This exploit requires libusb1 backend, but another backend is being used. Exiting.'
+    print('ERROR: This exploit requires libusb1 backend, but another backend is being used. Exiting.')
     sys.exit(1)
 
   global request, transfer_ptr, never_free_device

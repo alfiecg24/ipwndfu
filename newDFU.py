@@ -1,23 +1,22 @@
 import sys, time
-import usb # pyusb: use 'pip install pyusb' to install this module
-import usb.backend.libusb1
-import libusbfinder
+import usb1
 
 MAX_PACKET_SIZE = 0x800
 
 def acquire_device(timeout=5.0, match=None, fatal=True):
-  backend = usb.backend.libusb1.get_backend(find_library=lambda x:libusbfinder.libusb1_path())
   #print 'Acquiring device handle.'
   # Keep retrying for up to timeout seconds if device is not found.
   start = time.time()
   once = False
   while not once or time.time() - start < timeout:
       once = True
-      for device in usb.core.find(find_all=True, idVendor=0x5AC, idProduct=0x1227, backend=backend):
-          if match is not None and match not in device.serial_number:
-              continue
-          return device
-      time.sleep(0.001)
+      with usb1.USBContext() as context:
+        for device in context.getDeviceIterator(skip_on_error=True):
+            if device.getVendorID() == 0x5AC and device.getProductID() == 0x1227:
+                if match is not None and match not in device.getSerialNumber():
+                    continue
+                return device.open()
+            time.sleep(0.001)
   if fatal:
       print('ERROR: No Apple device in DFU Mode 0x1227 detected after %0.2f second timeout. Exiting.') % timeout
       sys.exit(1)
