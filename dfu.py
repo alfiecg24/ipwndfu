@@ -1,40 +1,28 @@
 import sys, time
-import usb # pyusb: use 'pip install pyusb' to install this module
-import usb.backend.libusb1
-import libusbfinder
+import usb1 # pyusb: use 'pip install pyusb' to install this module
 
 MAX_PACKET_SIZE = 0x800
 
 def acquire_device(timeout=5.0, match=None, fatal=True):
-  backend = usb.backend.libusb1.get_backend(find_library=lambda x:libusbfinder.libusb1_path())
-  #print 'Acquiring device handle.'
-  # Keep retrying for up to timeout seconds if device is not found.
-  start = time.time()
-  once = False
-  while not once or time.time() - start < timeout:
-      once = True
-      for device in usb.core.find(find_all=True, idVendor=0x5AC, idProduct=0x1227, backend=backend):
-          if match is not None and match not in device.serial_number:
-              continue
-          return device
-      time.sleep(0.001)
-  if fatal:
-      print('ERROR: No Apple device in DFU Mode 0x1227 detected after %0.2f second timeout. Exiting.') % timeout
-      sys.exit(1)
-  return None
+    context = usb1.USBContext()
 
-def release_device(device):
+    for device in context.getDeviceIterator(skip_on_error=True):
+        if device.getVendorID() == 0x5AC and device.getProductID() == 0x1227:
+            return device
+
+def release_device(device: usb1.USBDeviceHandle, interface: usb1.USBInterface):
     #print 'Releasing device handle.'
-    usb.util.dispose_resources(device)
+    device.releaseInterface(interface)
+    device = device.close()
 
 def reset_counters(device):
     #print 'Resetting USB counters.'
     assert device.ctrl_transfer(0x21, 4, 0, 0, 0, 1000) == 0
 
-def usb_reset(device):
+def usb_reset(device: usb1.USBDeviceHandle):
     print('Performing USB port reset.')
     try:
-        device.reset()
+        device.resetDevice()
     except usb.core.USBError:
         # OK: doesn't happen on Yosemite but happens on El Capitan and Sierra
         pass
@@ -61,8 +49,8 @@ def get_data(device, amount):
 
 def request_image_validation(device):
     print('Requesting image validation.')
-    assert device.ctrl_transfer(0x21, 1, 0, 0, b'', 1000) == 0
-    device.ctrl_transfer(0xA1, 3, 0, 0, 6, 1000)
+    assert device._controlTransfer(0x21, 1, 0, 0, b'', 0, 1000) == 0
+    device._controlTransfer(0xA1, 3, 0, 0, 6, 1000)
     device.ctrl_transfer(0xA1, 3, 0, 0, 6, 1000)
     device.ctrl_transfer(0xA1, 3, 0, 0, 6, 1000)
     usb_reset(device)
