@@ -200,6 +200,13 @@ if __name__ == '__main__':
                 securerom = pwned.read_memory(pwned.platform.rom_base, pwned.platform.rom_size)
                 if hashlib.sha1(securerom).hexdigest() != pwned.platform.rom_sha1:
                     print(hashlib.sha1(securerom).hexdigest())
+                    # Dumping SecureROM in Python3 - GeoHot's fork of ipwndfu
+                    #chip    = securerom[0x200:0x240].split(b' ')[2][:-1]
+                    #kind    = securerom[0x240:0x280].split(b'\0')[0]
+                    #version = securerom[0x280:0x2C0].split(b'\0')[0][6:]
+                    #filename = 'SecureROM-%s-%s-%s.dump' % (chip, version, kind)
+                    #with open(filename, 'wb') as f:
+                    #    f.write(securerom)
                     print('ERROR: SecureROM was dumped, but the SHA1 hash does not match. Exiting.')
                     sys.exit(1)
                 # Dumping SecureROM in Python3 - GeoHot's fork of ipwndfu

@@ -105,9 +105,9 @@ class PwnedUSBDevice():
 
     # HACK
     if response_length == 0:
-      response = device.ctrl_transfer(0xA1, 2, 0xFFFF, 0, response_length + 1, CMD_TIMEOUT).tostring()[1:]
+      response = device.ctrl_transfer(0xA1, 2, 0xFFFF, 0, response_length + 1, CMD_TIMEOUT).tobytes()[1:]
     else:
-      response = device.ctrl_transfer(0xA1, 2, 0xFFFF, 0, response_length, CMD_TIMEOUT).tostring()
+      response = device.ctrl_transfer(0xA1, 2, 0xFFFF, 0, response_length, CMD_TIMEOUT).tobytes()
     dfu.release_device(device)
     assert len(response) == response_length
     return response

