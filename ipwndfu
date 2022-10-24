@@ -45,6 +45,7 @@ if __name__ == '__main__':
 
     for opt, arg in opts:
         if opt == '-p':
+            # checkm8 does not work, need to test the others, I've done limera1n before so I'll copy it over
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
@@ -81,6 +82,7 @@ if __name__ == '__main__':
                 sys.exit(1)
 
         if opt == '-x':
+            # Needs testing
             device = PwnedDFUDevice()
             if device.config.cpid != '8920':
                 print('This is not a compatible device. alloc8 exploit is for iPhone 3GS only.')
@@ -111,6 +113,7 @@ if __name__ == '__main__':
             device.flash_nor(new_nor.dump())
 
         if opt == '-f':
+            # Needs testing
             try:
                 with open(arg, 'rb') as f:
                     data = f.read()
@@ -125,12 +128,14 @@ if __name__ == '__main__':
             dfu.release_device(device)
 
         if opt == '--demote':
+            # Crashes out of DFU
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
 
             if 'PWND:[checkm8]' in serial_number:
                 pwned = usbexec.PwnedUSBDevice()
+                # Crashes here
                 old_value = pwned.read_memory_uint32(pwned.platform.demotion_reg)
                 print('Demotion register: 0x%x' % old_value)
                 if old_value & 1:
@@ -149,6 +154,7 @@ if __name__ == '__main__':
                 sys.exit(1)
 
         if opt == '--dump':
+            # Needs testing
             if arg.count(',') != 1:
                 print('ERROR: You must provide exactly 2 comma separated values: address,length')
                 sys.exit(1)
@@ -168,6 +174,7 @@ if __name__ == '__main__':
                 print(device.read_memory(address, length))
 
         if opt == '--hexdump':
+            # Needs testing
             if arg.count(',') != 1:
                 print('ERROR: You must provide exactly 2 comma separated values: address,length')
                 sys.exit(1)
@@ -191,6 +198,7 @@ if __name__ == '__main__':
                 print(utilities.hex_dump(dump, address),)
 
         if opt == '--dump-rom':
+            # Produces SecureROM with different SHA1 - strangely the dump from securerom.fun also has a different SHA1??
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
@@ -227,6 +235,7 @@ if __name__ == '__main__':
                 print('SecureROM dumped to file:', filename)
 
         if opt == '--dump-nor':
+            # Needs testing
             device = PwnedDFUDevice()
             if device.config.cpid != '8920':
                 print('This is not a compatible device. Dumping NOR is only supported on iPhone 3GS.')
@@ -238,6 +247,7 @@ if __name__ == '__main__':
             print('NOR dumped to file: %s' % arg)
 
         if opt == '--flash-nor':
+            # Needs testing
             print('Flashing NOR from file:', arg)
             f = open(arg, 'rb')
             new_nor = f.read()
@@ -254,6 +264,7 @@ if __name__ == '__main__':
             device.flash_nor(new_nor)
 
         if opt == '--24kpwn':
+            # Needs testing
             print('*** based on 24Kpwn exploit (segment overflow) by chronic, CPICH, ius, MuscleNerd, Planetbeing, pod2g, posixninja, et al. ***')
 
             device = PwnedDFUDevice()
@@ -280,6 +291,7 @@ if __name__ == '__main__':
             device.flash_nor(nor.dump())
 
         if opt == '--remove-24kpwn':
+            # Needs testing
             device = PwnedDFUDevice()
             if device.config.cpid != '8920':
                 print('This is not a compatible device. 24Kpwn exploit is only supported on iPhone 3GS.')
@@ -304,6 +316,7 @@ if __name__ == '__main__':
             device.flash_nor(nor.dump())
 
         if opt == '--remove-alloc8':
+            # Needs testing
             device = PwnedDFUDevice()
             if device.config.cpid != '8920':
                 print('This is not a compatible device. alloc8 exploit is for iPhone 3GS only.')
@@ -325,6 +338,7 @@ if __name__ == '__main__':
             device.flash_nor(new_nor.dump())
 
         if opt == '--decrypt-gid':
+            # Needs testing
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
@@ -339,6 +353,7 @@ if __name__ == '__main__':
                 print(device.aes_hex(arg, AES_DECRYPT, AES_GID_KEY))
 
         if opt == '--encrypt-gid':
+            # Needs testing
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
@@ -353,6 +368,7 @@ if __name__ == '__main__':
                 print(device.aes_hex(arg, AES_ENCRYPT, AES_GID_KEY))
 
         if opt == '--decrypt-uid':
+            # Needs testing
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
@@ -367,6 +383,7 @@ if __name__ == '__main__':
                 print(device.aes_hex(arg, AES_DECRYPT, AES_UID_KEY))
 
         if opt == '--encrypt-uid':
+            # Needs testing
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
@@ -381,6 +398,7 @@ if __name__ == '__main__':
                 print(device.aes_hex(arg, AES_ENCRYPT, AES_UID_KEY))
 
         if opt == '--boot':
+            # Can't test, no A11 device
             device = dfu.acquire_device()
             serial_number = device.serial_number
             dfu.release_device(device)
