@@ -31,7 +31,7 @@ class Image3:
         bytes = struct.pack('4s3I4s', 'Img3'[::-1], totalSize, dataSize, signedSize, type)
         for (tagMagic, tagTotalSize, tagDataSize, tagData) in tags:
             bytes += struct.pack('4s2I', tagMagic, tagTotalSize, tagDataSize) + tagData
-        return bytes + '\x00' * (totalSize - len(bytes))
+        return bytes + b'\x00' * (totalSize - len(bytes))
 
     def getTags(self, magic):
         matches = []
@@ -64,8 +64,8 @@ class Image3:
             tag = self.tags[i]
             if tag[0] == 'CERT'[::-1] and len(tag[3]) >= 3072:
                 data = tag[3][:3072]
-                assert data[-1] == '\x00'
-                data = data.rstrip('\x00')
+                assert data[-1] == b'\x00'
+                data = data.rstrip(b'\x00')
                 self.tags[i] = ('CERT'[::-1], 12 + len(data), len(data), data)
                 break
 

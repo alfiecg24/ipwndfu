@@ -282,7 +282,7 @@ def _load_library(find_library=None):
         win_cls = None
 
     return usb.libloader.load_locate_library(
-                ('usb-1.0', 'libusb-1.0', 'usb'),
+                ('usb-1.0', 'libusb-1.0.0', 'usb'),
                 'cygusb-1.0.dll', 'Libusb 1',
                 win_cls=win_cls,
                 find_library=find_library, check_symbols=('libusb_init',))

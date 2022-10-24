@@ -1,9 +1,8 @@
 make --dry-run --always-make --keep-going --print-directory
-make: Entering directory `/Volumes/Development/iOS Exploits/ipwndfu'
+make: Entering directory '/Volumes/Development/iOS Exploits/ipwndfu'
 arm-none-eabi-as -march=armv6 -mthumb --fatal-warnings -o bin/steaks4uce-shellcode.o src/steaks4uce-shellcode.S
 arm-none-eabi-objcopy -O binary bin/steaks4uce-shellcode.o bin/steaks4uce-shellcode.bin
 rm bin/steaks4uce-shellcode.o
- 
 arm-none-eabi-as -mthumb --fatal-warnings -o bin/limera1n-shellcode.o src/limera1n-shellcode.S
 arm-none-eabi-objcopy -O binary bin/limera1n-shellcode.o bin/limera1n-shellcode.bin
 rm bin/limera1n-shellcode.o
@@ -37,5 +36,5 @@ rm bin/t8010_t8011_disable_wxn_arm64.o
 xcrun -sdk iphoneos clang src/t8015_shellcode_arm64.S -target arm64-apple-darwin -Wall -o bin/t8015_shellcode_arm64.o
 gobjcopy -O binary -j .text bin/t8015_shellcode_arm64.o bin/t8015_shellcode_arm64.bin
 rm bin/t8015_shellcode_arm64.o
-make: Leaving directory `/Volumes/Development/iOS Exploits/ipwndfu'
+make: Leaving directory '/Volumes/Development/iOS Exploits/ipwndfu'
  

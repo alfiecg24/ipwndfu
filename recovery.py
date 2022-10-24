@@ -16,7 +16,7 @@ def acquire_device(timeout=10):
             return device
         sys.stdout.flush()
         time.sleep(0.1)
-    print 'ERROR: No Apple device in Recovery Mode 0x1281 detected. Exiting.'
+    print('ERROR: No Apple device in Recovery Mode 0x1281 detected. Exiting.')
     sys.exit(1)
 
 def release_device(device):
@@ -25,10 +25,10 @@ def release_device(device):
 
 def send_command(device, command):
     # TODO: Add assert?
-    device.ctrl_transfer(0x40, 0, 0, 0, command + '\x00', 30000)
+    device.ctrl_transfer(0x40, 0, 0, 0, command + b'\x00', 30000)
 
 def send_data(device, data):
-    #print 'Sending 0x%x of data to device.' % len(data)
+    print('Sending 0x%x of data to device.' % len(data))
     assert device.ctrl_transfer(0x41, 0, 0, 0, 0, 1000) == 0
     index = 0
     while index < len(data):

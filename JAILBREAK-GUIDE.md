@@ -1,44 +1,16 @@
-# Jailbreak guide for iPhone 3GS (new bootrom)
+# Jailbreak guide for iPhone 3GS (old or new bootrom)
 
 ### Steps
 
-1. Backup your data. Everything will be removed from your phone as it is a **full** restore.
+1. Backup any data. Everything will be removed from your phone as it is a **full** restore.
 
-2. [Generate a custom 24Kpwn IPSW for iPhone 3GS (old bootrom)](#how-to-create-a-24kpwn-ipsw).
+2. [Figure out whether your device is old or new bootrom](#decoding-iphone-3gs-serial-number)
 
-3. [Restore to this custom IPSW on your iPhone 3GS (new bootrom)](#how-to-restore-to-a-custom-ipsw).
+3. [Generate a custom 24Kpwn IPSW for iPhone 3GS (make sure to select old bootrom)](#how-to-create-a-24kpwn-ipsw).
 
-4. After restore is complete, your phone will connect back to your computer in DFU Mode. The screen will be black. This is expected. 24Kpwn exploit does not work on iPhone 3GS (new bootrom).
+4. [Restore your custom IPSW](#how-to-restore-to-a-custom-ipsw)
 
-5. Use ipwndfu to put your device into pwned DFU Mode:
 
-```
-$ ./ipwndfu -p
-*** based on limera1n exploit (heap overflow) by geohot ***
-Found: CPID:8920 CPRV:15 CPFM:03 SCEP:03 BDID:00 ECID:XXXXXXXXXXXXXXXX SRTG:[iBoot-359.3.2]
-Device is now in pwned DFU Mode.
-```
-
-6. Once in pwned DFU Mode, use the -x flag to install the alloc8 exploit. This step will replace 24Kpwn exploit with alloc8.
-
-```
-$ ./ipwndfu -x
-Installing alloc8 exploit to NOR.
-Dumping NOR, part 1/8.
-Dumping NOR, part 2/8.
-Dumping NOR, part 3/8.
-Dumping NOR, part 4/8.
-Dumping NOR, part 5/8.
-Dumping NOR, part 6/8.
-Dumping NOR, part 7/8.
-Dumping NOR, part 8/8.
-NOR backed up to file: nor-backups/nor-XXXXXXXXXXXXXXXX-20170409-224258.dump
-Sending iBSS.
-Waiting for iBSS to enter Recovery Mode.
-Sending iBSS payload to flash NOR.
-Sending run command.
-If screen is not red, NOR was flashed successfully and device will reboot.
-```
 
 #### Notes:
 * Installation takes about 30 seconds. Once NOR is being flashed, the screen will be green for about 10 seconds, and then your phone will reboot.
@@ -48,10 +20,6 @@ If screen is not red, NOR was flashed successfully and device will reboot.
 * If the screen turns red, something went wrong while your phone was being flashed. Trying again probably won't help.
 
 * If there are no issues, the phone will reboot and automatically boot into iOS.
-
-
-
-
 
 ### 3 second delay during boot when using a phone jailbroken with alloc8
 
@@ -73,26 +41,12 @@ https://ipsw.me/
 
 ### How to create a 24Kpwn IPSW
 
-| iOS version | Tool                                                                                            |
-|-------------|-------------------------------------------------------------------------------------------------|
-| iOS 3.1     | [PwnageTool 3.1.3](https://github.com/axi0mX/PwnageTool-mirror/raw/master/PwnageTool_3.1.3.dmg) |
-| iOS 3.1.2   | [PwnageTool 3.1.5](https://github.com/axi0mX/PwnageTool-mirror/raw/master/PwnageTool_3.1.5.dmg) |
-| iOS 3.1.3   | [PwnageTool 3.1.5](https://github.com/axi0mX/PwnageTool-mirror/raw/master/PwnageTool_3.1.5.dmg) |
-| iOS 4.0     | [PwnageTool 4.01](https://github.com/axi0mX/PwnageTool-mirror/raw/master/PwnageTool_4.01.dmg)   |
-| iOS 4.3.3   | [redsn0w 0.9.15 beta 3](http://www.iphonehacks.com/download-redsn0w)                            |
-| iOS 5.0     | [redsn0w 0.9.15 beta 3](http://www.iphonehacks.com/download-redsn0w)                            |
-| iOS 5.0.1   | [redsn0w 0.9.15 beta 3](http://www.iphonehacks.com/download-redsn0w)                            |
-| iOS 5.1     | [redsn0w 0.9.15 beta 3](http://www.iphonehacks.com/download-redsn0w)                            |
-| iOS 5.1.1   | [redsn0w 0.9.15 beta 3](http://www.iphonehacks.com/download-redsn0w)                            |
-
-#### Notes on using redsn0w 0.9.15b3
-
-```
-Q: Will this custom IPSW be used on a newer (fixed) version of the iPhone3GS?
-A: No
-```
-
-You must answer No to create a 24Kpwn IPSW using redsn0w. If you did this correctly, the name of the custom IPSW from redsn0w will start with ```NO_BB_OLDROM_iPhone2,1```.
+* Download [sn0wbreeze v2.9.6]("https://mega.nz/folder/k4FAXCIB#Fk7pxs6ikYzL3YBvAGX5ig/file/A8M0gaKJ") - it _must_ be this version otherwise your downgrade won't work.
+* Download the IPSW of the version you're downgrading to as put these two files in a folder for you to find later on
+* For the next steps, you will need a Windows VM. The easiest way is to just get a free trial for [Parallels]("https://www.parallels.com"), but the open-source [UTM]("https://github.com/utmapp/UTM/releases/tag/v3.2.4") is also a great alternative (but requires more setup) - just download `UTM.dmg`.
+* Setup your VM, you can find guides online, and then transfer the folder mentioned previously to the VM.
+* Open sn0wbreeze - if you get an error about low storage, moving the file into the `C:\` directory usually works. If asked, make sure to create an IPSW for an old bootrom iPhone 3GS.
+* Create your custom IPSW with your preferred customisation options, and then [put your device into pwned DFU mode](#how-to-restore-to-a-custom-ipsw) to begin the restore process.
 
 
 ### Compatibility with older iOS versions
@@ -127,8 +81,37 @@ EE = Color
 
 ### How to restore to a custom IPSW
 
-1. Enter DFU Mode: https://www.theiphonewiki.com/wiki/DFU_Mode
+1. Enter DFU Mode using [this guide](https://www.theiphonewiki.com/wiki/DFU_Mode) if needed.
 
-2. Run exploit to put your phone into pwned DFU Mode. You can use `./ipwndfu -p`.
+2. Use the Windows VM to open the iREB program inside sn0wbreeze to put your iPhone in pwned DFU mode.
 
-3. Any version of iTunes should work. In iTunes, hold Option (or SHIFT if using Windows) and click Restore. You should be prompted to choose a file. Choose your custom IPSW.
+3. Still working on a way to restore with M1 Macs, for now you will have to use an actual Windows machine. If there is a white screen when restoring, you used the wrong version of sn0wbreeze.
+
+4. If you have an old bootrom device, you're all finished once the restore finishes. If not, use ipwndfu to put your device into pwned DFU using the following commands
+```
+$ ./ipwndfu -p
+*** based on limera1n exploit (heap overflow) by geohot ***
+Found: CPID:8920 CPRV:15 CPFM:03 SCEP:03 BDID:00 ECID:XXXXXXXXXXXXXXXX SRTG:[iBoot-359.3.2]
+Device is now in pwned DFU Mode.
+```
+
+5. Finally, install the alloc8 exploit to NOR and the phone should (hopefully) boot into iOS!
+
+```
+$ ./ipwndfu -x
+Installing alloc8 exploit to NOR.
+Dumping NOR, part 1/8.
+Dumping NOR, part 2/8.
+Dumping NOR, part 3/8.
+Dumping NOR, part 4/8.
+Dumping NOR, part 5/8.
+Dumping NOR, part 6/8.
+Dumping NOR, part 7/8.
+Dumping NOR, part 8/8.
+NOR backed up to file: nor-backups/nor-XXXXXXXXXXXXXXXX-20170409-224258.dump
+Sending iBSS.
+Waiting for iBSS to enter Recovery Mode.
+Sending iBSS payload to flash NOR.
+Sending run command.
+If screen is not red, NOR was flashed successfully and device will reboot.
+```
