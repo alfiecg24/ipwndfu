@@ -89,22 +89,15 @@ https://github.com/axi0mX/alloc8
 
 ## iBSS
 
-Download iPhone 3GS iOS 4.3.5 IPSW from Apple:
-
-http://appldnld.apple.com/iPhone4/041-1965.20110721.gxUB5/iPhone2,1_4.3.5_8L1_Restore.ipsw
-
-In Terminal, extract iBSS using the following command, then move the file to ipwndfu folder:
-
-```
-unzip -p <path-to-IPSW> Firmware/dfu/iBSS.n88ap.RELEASE.dfu > <path-to-ipwndfu>/n88ap-iBSS-4.3.5.img3
-```
+* ipwndfu requires a copy of the iOS 4.3.5 iBSS to pwn your iPhone 3GS
+* ipwndfu will download this for you during the script
+* If you prefer, you can downlaod it manually and place it in this folder
+* The file name *must* be `n88ap-iBSS-4.3.5.img3`
 
 
 ## Coming soon!
 
 * Reorganize and refactor code.
-
-* Easier setup: download iBSS automatically using partial zip.
 
 * Dump SecureROM on S5L8720 devices.
 

@@ -6,7 +6,7 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # This is free software: you are free to change and redistribute it.
 # There is NO WARRANTY, to the extent permitted by law.
 
-# Make data base, printed on Mon Oct 24 17:31:32 2022
+# Make data base, printed on Tue Oct 25 09:19:51 2022
 
 # Variables
 
@@ -71,7 +71,7 @@ APPLICATION_INSIGHTS_NO_DIAGNOSTIC_CHANNEL = 1
 # environment
 MFLAGS = -pqrR
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.ndbUH0UYqk/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.wiSylSockp/Listeners
 # default
 .SHELLFLAGS := -c
 # automatic
@@ -82,8 +82,9 @@ MAKEFILE_LIST := Makefile
 @F = $(notdir $@)
 # environment
 ZSH = /Users/alfie/.oh-my-zsh
+ 
 # environment
-VSCODE_PID = 2097
+VSCODE_PID = 1653
 # automatic
 ?D = $(patsubst %/,%,$(dir $?))
 # environment
@@ -169,9 +170,9 @@ SUFFIXES :=
 
 # Directories
 
-# . (device 16777235, inode 233586): 39 files, no impossibilities.
+# . (device 16777234, inode 233586): 41 files, no impossibilities.
 
-# 39 files, no impossibilities in 1 directories.
+# 41 files, no impossibilities in 1 directories.
 
 # Implicit Rules
 
@@ -226,7 +227,6 @@ arm64:
 	rm bin/checkm8_arm64.o
 	xcrun -sdk iphoneos clang src/t8010_t8011_disable_wxn_arm64.S -target arm64-apple-darwin -Wall -o bin/t8010_t8011_disable_wxn_arm64.o
 	gobjcopy -O binary -j .text bin/t8010_t8011_disable_wxn_arm64.o bin/t8010_t8011_disable_wxn_arm64.bin
- 
 	rm bin/t8010_t8011_disable_wxn_arm64.o
 	xcrun -sdk iphoneos clang src/t8015_shellcode_arm64.S -target arm64-apple-darwin -Wall -o bin/t8015_shellcode_arm64.o
 	gobjcopy -O binary -j .text bin/t8015_shellcode_arm64.o bin/t8015_shellcode_arm64.bin
@@ -290,12 +290,12 @@ armv6:
 
 # No general ('VPATH' variable) search path.
 
-# strcache buffers: 1 (0) / strings = 47 / storage = 497 B / avg = 10 B
-# current buf: size = 8162 B / used = 497 B / count = 47 / avg = 10 B
+# strcache buffers: 1 (0) / strings = 49 / storage = 545 B / avg = 11 B
+# current buf: size = 8162 B / used = 545 B / count = 49 / avg = 11 B
 
-# strcache performance: lookups = 59 / hit rate = 20%
+# strcache performance: lookups = 61 / hit rate = 19%
 # hash-table stats:
-# Load=47/8192=1%, Rehash=0, Collisions=0/59=0%
-# Finished Make data base on Mon Oct 24 17:31:32 2022
+# Load=49/8192=1%, Rehash=0, Collisions=0/61=0%
+# Finished Make data base on Tue Oct 25 09:19:51 2022
 
  

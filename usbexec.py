@@ -94,20 +94,29 @@ class PwnedUSBDevice():
     return data
 
   def command(self, request_data, response_length):
+    # Need to find out which control transfer fails
+
     assert 0 <= response_length <= USB_READ_LIMIT
     device = dfu.acquire_device()
     assert self.serial_number == device.serial_number
     dfu.send_data(device, b'\0' * 16)
+    print("Sent \0 * 16")
     device.ctrl_transfer(0x21, 1, 0, 0, 0, 100)
+    print("Sent DFU download")
     device.ctrl_transfer(0xA1, 3, 0, 0, 6, 100)
+    print("Sent DFU get status")
     device.ctrl_transfer(0xA1, 3, 0, 0, 6, 100)
+    print("Sent DFU get status")
     dfu.send_data(device, request_data)
+    print("Sent request data")
 
     # HACK
     if response_length == 0:
       response = device.ctrl_transfer(0xA1, 2, 0xFFFF, 0, response_length + 1, CMD_TIMEOUT).tobytes()[1:]
+      print("Got response data")
     else:
       response = device.ctrl_transfer(0xA1, 2, 0xFFFF, 0, response_length, CMD_TIMEOUT).tobytes()
+      print("Got response data")
     dfu.release_device(device)
     assert len(response) == response_length
     return response

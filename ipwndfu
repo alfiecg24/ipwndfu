@@ -2,6 +2,9 @@
 # ipwndfu: open-source jailbreaking tool for older iOS devices
 # Author: axi0mX
 
+
+# checkm8 does NOT work, so for now using 0x7ff's gaster to pwn
+
 import binascii, datetime, getopt, hashlib, struct, sys, time
 import dfu, nor, utilities
 import alloc8, checkm8, image3_24Kpwn, limera1n, SHAtter, steaks4uce, usbexec
@@ -154,13 +157,14 @@ if __name__ == '__main__':
                 sys.exit(1)
 
         if opt == '--dump':
-            # Needs testing
+            # Produces Input/Output error and crashes out of DFU
             if arg.count(',') != 1:
                 print('ERROR: You must provide exactly 2 comma separated values: address,length')
                 sys.exit(1)
             raw_address, raw_length = arg.split(',')
             address = int(raw_address, 16) if raw_address.startswith('0x') else int(raw_address, 10)
             length = int(raw_length, 16) if raw_length.startswith('0x') else int(raw_length, 10)
+            print(f"Reading memory at address: {address}, length: {length}")
 
             device = dfu.acquire_device()
             serial_number = device.serial_number
@@ -168,7 +172,7 @@ if __name__ == '__main__':
 
             if 'PWND:[checkm8]' in serial_number:
                 device = usbexec.PwnedUSBDevice()
-                sys.stdout.write(device.read_memory(address, length))
+                sys.stdout.write(device.read_memory(address, length)) # this function fails
             else:
                 device = PwnedDFUDevice()
                 print(device.read_memory(address, length))
